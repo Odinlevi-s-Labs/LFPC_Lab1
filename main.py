@@ -1,4 +1,7 @@
-from Visualize import GraphVisualization
+#from PySimpleAutomata import DFA, automata_IO
+
+import networkx as nx
+import matplotlib.pyplot as plt
 
 """
 
@@ -82,5 +85,32 @@ if __name__ == "__main__":
         is_string_ok, message = check_string(VN, VT, P, input_str)
         print("Is string ok: {}, Message: {}".format(is_string_ok, message))
 
-    G = GraphVisualization()
+    G = nx.Graph()
+    G.add_edge("S", "A")
+    G.add_edge("A", "B")
+    G.add_edge("A", "A")
+    G.add_edge("B", "B")
+    G.add_edge("B", "C")
+    G.add_edge("B", "*")
+    G.add_edge("C", "B")
+    pos = nx.spring_layout(G)
+    plt.figure()
+    nx.draw(G, pos, edge_color='black', width=1, linewidths=1,
+            node_size=500, node_color='pink', alpha=0.9,
+            labels={node: node for node in G.nodes()})
+
+    edge_labels = {
+        ("S", "A"): "d",
+        ("A", "B"): "a",
+        ("A", "A"): "b",
+        ("B", "B"): "a",
+        ("B", "C"): "b",
+        ("B", "*"): "d",
+        ("C", "B"): "c",
+    }
+
+    nx.draw_networkx_edge_labels(G, pos=pos, edge_labels=edge_labels)
+    plt.show()
+
+
     #https://stackoverflow.com/questions/28372127/add-edge-weights-to-plot-output-in-networkx
